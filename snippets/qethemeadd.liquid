@@ -1,0 +1,167 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+{{ '//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css' | stylesheet_tag }}
+{{ '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css' | stylesheet_tag }}
+{{ 'quickview.scss.css' | asset_url | stylesheet_tag }}
+{{ '//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js' | script_tag }} 
+
+<script type="text/javascript">
+if(typeof jQuery == 'undefined'){
+document.write('<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></'+'script>');
+}
+</script>
+<script>
+
+  {% capture content %}{% include 'quickview' %}{% endcapture %}
+  var content = {{ content | json }};
+  
+</script>
+<script>
+$( document ).ready(function() {
+  
+	 $.post(
+              'https://www.qetail.com/apps/qequickview/Auth/getclass',
+              {
+                shop_url:"{{ shop.url }}"
+           }).done(function(response){
+              data = JSON.parse(response);
+             
+              $enableappbutton=data[0].enableappbutton;
+              $quickviewbutton_text_name=data[0].quickviewbutton_text_name;
+              $quickviewbutton_bg_color=data[0].quickviewbutton_bg_color;
+              $quickviewbutton_text_color=data[0].quickviewbutton_text_color;
+              $addtocartbutton_bg_color=data[0].addtocartbutton_bg_color;
+              $addtocartbutton_text_color=data[0].addtocartbutton_text_color;
+              $popup_bg_color=data[0].popup_bg_color;
+              $popup_text_color=data[0].popup_text_color;
+              $showprice_text=data[0].showprice_text;
+              $showdescription_text=data[0].showdescription_text;
+         	  $popup_window_width=data[0].popup_window_width;
+              $popup_window_height=data[0].popup_window_height;	
+              $quickview_icon_name=data[0].quickview_icon_name;	
+              $quickview_loader=data[0].quickview_loader;	
+              $showvendor_text=data[0].showvendor_text;  
+              
+       		  //Announcement Bar
+       
+       		  $ab_bar_on=data[0].ab_bar_on; 	
+              $ab_text=data[0].ab_text; 
+       		  $ab_text_bg=data[0].ab_text_bg;
+              $ab_text_text=data[0].ab_text_text;
+              $ab_button_text_name=data[0].ab_button_text_name;
+       		  $ab_font_size=data[0].ab_font_size;
+       		  $ab_button_bg_color=data[0].ab_button_bg_color;	
+       		  $ab_button_text_color=data[0].ab_button_text_color;	
+       		  $ab_button_link=data[0].ab_button_link;
+              $ab_show_page=data[0].ab_show_page;	       
+       		  $ab_show_qv_page=data[0].ab_show_qv_page;	
+       		  $ab_icon_name=data[0].ab_icon_name;
+       		  $bg_image=data[0].bg_image;
+              $shopname=data[0].name;
+      
+    
+       		   //Show when on in show inquickview and announcement bar    
+              if ($ab_bar_on == 'on' &&  $ab_show_qv_page == 'on'){   
+              $( "body" ).append( "<style>.qe_announcement{font-size:"+$ab_font_size+";color:#"+$ab_text_text+" !important }</style>" );
+	          $( "body" ).append( "<style>.ab_button_text_name{background-color:#"+$ab_button_bg_color+" !important;color:#"+$ab_button_text_color+" !important }</style>" );
+              if($bg_image != ""){
+              $( "body" ).append("<style>.qe_announcement{background-color:none !important;background: url("+$bg_image+");}</style>" ); 
+              }
+              else{
+               $( "body" ).append( "<style>.qe_announcement{background-color:#"+$ab_text_bg+" !important;}</style>" );
+	           
+              }  
+                
+              
+              }else{$( "body" ).append( "<style>.qe_announcement{display:none !important;}</style>" );}
+                
+       
+              
+         	  if($enableappbutton=="on"){
+              
+                var script = document.createElement("SCRIPT");
+                script.src = '{{ 'quickview.js' | asset_url }}';
+                script.type = 'text/javascript';
+                
+                document.getElementById("quickviewjs").appendChild(script);
+                
+               //loader name,textname,icon name 
+               $( "body" ).append( "<style>.loader{background: url("+$quickview_loader+")50% 50% no-repeat rgb(249,249,249);}</style>" ); 
+               $('.qetextname').html(" "+$quickviewbutton_text_name);
+               $('.qetextname').addClass($quickview_icon_name);
+                
+                
+                
+               //image width thumbnail
+            
+                
+               //All the colour code here 
+               $( "body" ).append( "<style>.quick-view{background-color:#"+$quickviewbutton_bg_color+" !important;color:#"+$quickviewbutton_text_color+" !important }</style>" );
+	           $( "body" ).append( "<style>.qv-add-button{background-color:#"+$addtocartbutton_bg_color+" !important;color:#"+$addtocartbutton_text_color+" !important }</style>" );
+	           $( "body" ).append( "<style>#quick-view{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-images{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-product-title{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+                $( "body" ).append( "<style>.savingprice{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-product-type{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-product-price{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.view-product{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-quantity{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-quantity{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.option{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.vqep{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-product-original-price{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-product-description{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+               $( "body" ).append( "<style>.qv-product-vendor{background-color:#"+$popup_bg_color+" !important;color:#"+$popup_text_color+" !important }</style>" );
+            
+               
+                
+                //Popup height and width here.
+               $( "body" ).append( "<style>.fancybox-inner{height:100% !important;width:100% !important }</style>" );
+               if($popup_window_height == "100"){
+                 $( "body" ).append( "<style>.fancybox-wrap{height: 100% !important;padding: 40px !important; width: 100% !important;top:0px !important;left:0px !important }</style>" );
+               }else{    
+               $( "body" ).append( "<style>.fancybox-wrap{height:"+$popup_window_height+"% !important;width:"+$popup_window_width+"% !important }</style>" );
+               }
+			   
+                
+               //Description On/Off here 
+               if($showdescription_text=="on"){}else
+               {
+                 $( "body" ).append( "<style>.qv-product-description{display:none !important;}</style>" );
+                 
+               }
+                
+               //Price On/Off here  
+               if($showprice_text=="on"){}else
+               {
+               	 $( "body" ).append( "<style>.qv-product-price{display:none !important;}</style>" );
+                 $( "body" ).append( "<style>.qv-product-original-price{display:none !important;}</style>" );
+               }
+                
+                //Vednor on/off here
+                if($showvendor_text=="on"){}else
+               {
+               	 $( "body" ).append( "<style>.qv-product-vendor{display:none !important;}</style>" );
+               } 
+			 		
+             
+               //text name blank then
+                
+               if($quickviewbutton_text_name=="") 
+               {
+               	 $( "body" ).append( "<style>.quick-view.quve{padding:0px !important;}</style>" );
+                 $( "body" ).append( "<style>.qetextname {max-width:50px !important;}</style>" );
+                   $( "body" ).append( "<style>.quick-view-button {max-width:50px !important;}</style>" );
+               
+               }
+                
+                
+              }
+       
+       
+       		  
+            
+              });
+  });
+  
+</script>
+<div id="quickviewjs"></div>

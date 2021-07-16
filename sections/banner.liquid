@@ -1,0 +1,58 @@
+<div class="promo parallax promo-full bottommargin-lg" style="background-image: url('{{ section.settings.banner | img_url: 'master' }}');" data-bottom-top="background-position:0px 300px;" data-top-bottom="background-position:0px -300px;">
+    <div class="container clearfix banner-mobile-css">
+        <h3>{{ section.settings.banner-heading }} <span>{{ section.settings.coupon }}</span></h3>
+        <span>{{ section.settings.banner-subheading }}</span>
+        <a href="/collections/all" class="button button-xlarge button-rounded">{{ section.settings.button }}</a>
+    </div>
+</div>
+
+<!-- bottommargin-lg -->
+
+{% schema %}
+  {
+  "name": "Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "banner",
+      "label": "Banner"
+    },
+    {
+       "type":      "text",
+       "id":        "coupon",
+       "label":     "Coupon",
+       "default":   "SHOP30"
+    },
+    {
+       "type":      "textarea",
+       "id":        "banner-heading",
+       "label":     "Banner",
+       "default":   "Get 30% off on orders of $29 or more. Use Coupon:"
+    },
+    {
+       "type":      "textarea",
+       "id":        "banner-sub",
+       "label":     "Banner Subheading",
+       "default":   "Sale available on selected Designer Brands that include Apparels, Footwear, Fashion Accessories &amp; Watches."
+    },
+    {
+       "type":      "text",
+       "id":        "button",
+       "label":     "Button Text",
+       "default":   "Start Shopping"
+    }
+  ],
+"presets": [
+      {
+        "category": "Banner",
+        "name": "Banner"
+      }
+    ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

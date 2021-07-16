@@ -1,0 +1,260 @@
+{% if product.metafields.clever["cleveroptionindex"] != blank and product.metafields.clever['is_clever_on']  == 1 %}
+   <style>
+     .product-single__thumbnails{opacity:0;}
+</style>
+{% endif %}
+
+
+<script id = "cleverscript" >
+
+    var cleveroptionindex = '';
+    var cleverimages = {{product.metafields.clever["cleverimages"] | json}};
+    // var cleveroptionindex = {{product.metafields.clever["cleveroptionindex"]}};
+    {% if product.metafields.clever["cleveroptionindex"] != blank %}
+    var cleveroptionindex = {{product.metafields.clever["cleveroptionindex"]}};
+    {% endif %}
+    var cleverproduct = {{product | json}};
+    var clevervariants = cleverproduct.variants;
+    var productimageswitcher =  {{product.metafields.clever['is_clever_on'] | json}};
+    var appimageswitcher = {{shop.metafields.clever['is_image_switcher_on'] | json}};
+
+    var imagesjson = {{product.images | json}};
+    var cleverproductimages = [];
+    var productid = {{product.id}};
+
+    var cleverproductimagesnew = [];
+
+    {% for image in  product.images %}
+
+    
+    cleverproductimagesnew[{{image.id }}] =  '{{  image.src  | img_url: '500x500' }}';
+    
+    {% endfor %}
+
+
+
+    {% assign i = 0 %}
+    {% for image in product.images %}
+    cleverproductimages[{{i}}] = [];
+    cleverproductimages[{{i}}]['src'] = imagesjson[{{i}}];
+    cleverproductimages[{{i}}]['id'] = {{image.id}};
+    {% assign i = i | plus:1 %}
+    {% endfor %}
+
+
+    if(cleverimages == null){
+
+        cleverimages=0;
+    }
+
+    if(cleveroptionindex == ''){
+
+        cleveroptionindex = 0;
+    }
+
+    var originalhtml;
+    var originalhtmlThumb;
+
+    var slideoption;
+    var slideoptionMain;
+
+    var wholeHtml = '';
+    var variantimagesArray = [];
+    document.addEventListener('DOMContentLoaded', function(event) {
+   
+
+        if( appimageswitcher==1 && productimageswitcher == 1 ) { 
+            setTimeout(function() {
+                var initval ='';
+                var isMobile = /iPhone|iPod|Android/i.test(navigator.userAgent);
+                var thumbsbackup;
+                
+                var thumboptions;
+                $(document).on("change", ".single-option-selector", function() {
+                    console.log('call');
+                    setTimeout(function() {
+                    cleverMapper();
+                    },200);
+
+                });
+
+
+                for (var i = 1; i < 4; i++) {
+
+                setTimeout(function() {
+
+                    if(initval == 'set'){
+
+                    
+                        return false;
+                    }
+                    cleverMapper();
+
+                }, i * 1000);
+
+                }
+
+                if(isMobile){
+
+                    thumboptions = $('.product-single__thumbnails').get(0).slick.options;
+                    
+                }
+
+                $(document).on("click", ".product-single__thumbnails a", function(e) {
+                    e.preventDefault();
+                    $('.product-single__thumbnails-item .active-thumb').removeClass('active-thumb');
+                    $(this).addClass('active-thumb');
+
+                    $('.product-single__media-group .hide').removeClass('hide');
+
+                    var tumbsrc = $(this).find('img').attr('src').replace("_500x500","");
+                    newthumbsrc = tumbsrc.split('?v=');
+                    
+                    $('.grid__item.product-single__media-group .product-single__media-wrapper').each(function(i, obj) {
+
+                        imgsrc = $(this).find('img:first').attr('src').replace("_300x300",""); 
+                        imgsrc = imgsrc.replace("https:","");
+                        newimgsrc = imgsrc.split('?v=');
+                    
+                        if(newthumbsrc[0] == newimgsrc[0]){
+                            
+                        }else{
+                            $(this).addClass('hide');
+                        }
+                    });             
+                    
+
+                });
+
+                thumbsbackup = $('.product-single__thumbnails li').clone();
+
+
+
+                function cleverMapper() {
+
+                    
+                    var found = 0;
+                    var fvalue = [];
+                    var foptionMap = [];
+                    var nvalue = [];
+                    var noptionMap = [];
+                    var available = false;
+                    var optionMap = [];
+
+                    $(".single-option-selector").each(function(key) {
+
+                        if( $(this).find('input[type=radio]:checked').val().length > 0){
+
+                            optionMap[key] = $(this).find('input[type=radio]:checked').val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, ''); 
+                        } else {
+
+                            optionMap[key] = $(this).find('input[type=radio]:checked').val(); 
+                        }
+                        
+                    }); 
+                        
+
+                    if (optionMap.length == 0) {
+                        
+                        $(".single-option-selector__radio").each(function(key) {
+                        
+                            optionMap[key] = $(this).val().replace(/[^a-z0-9\s]/gi, '').replace(/[_\s]/g, '');
+                        });
+                    }
+                    
+
+                    var variantimagesArray = [];
+                    var variantimagesArrayref = [];
+                    if (1) {
+                        
+
+                        if (1) {
+                            
+                            if (cleverimages[optionMap[cleveroptionindex]] != undefined) {
+                        
+                                while (variantimagesArray.length > 0) {
+                                    
+                                    variantimagesArray.pop();
+                                }
+                                
+                                variantimagesArrayref =  cleverimages[optionMap[cleveroptionindex]];
+
+                            
+                            }
+
+                            variantimagesArray = $.merge( $.merge( [], variantimagesArrayref ),cleverimages['CleverCommon']);
+
+                            firstimage = variantimagesArray[0].toString();
+
+                            if(isMobile){
+                            
+                                if(thumboptions == undefined){
+
+                                }else{
+                                $('.product-single__thumbnails').slick('unslick');
+                                }
+                                
+
+                                $('.product-single__thumbnails').html(thumbsbackup);
+                            
+                            }else{
+                        
+                                $('.product-single__thumbnails').html(thumbsbackup);
+                            }
+
+                            if(variantimagesArray.length > 0){
+
+                                imgarr = [];
+                            
+                                $(variantimagesArray).each(function(i, obj) {
+
+                                    if(variantimagesArray[i] != 0){
+
+                                        imgarr.push(cleverproductimagesnew[variantimagesArray[i]]);
+                                    }
+                                    
+
+                                });
+                            }
+
+                            $('.product-single__thumbnails li').remove();
+                            
+                            $(imgarr).each(function(i, obj) {
+
+                                zoomsrc = imgarr[i].replace('500x500', '1024x1024');
+
+                                $('.product-single__thumbnails').append('<li class="product-single__thumbnails-item product-single__thumbnails-item--medium js"><a href="'+imgarr[i]+'" class="text-link product-single__thumbnail product-single__thumbnail--product-template" data-thumbnail-id="" data-zoom="'+zoomsrc+'" aria-current="true"><img class="product-single__thumbnail-image" src="'+imgarr[i]+'" ></a></li>');
+                            });
+
+
+                            if(isMobile){
+                                if(thumboptions == undefined){
+
+                                }else{
+                                    $('.product-single__thumbnails .slick-cloned').remove();
+                                    $('.product-single__thumbnails .slick-slide').removeClass('slick-slide');
+
+                                    $('.product-single__thumbnails').slick(thumboptions);
+
+                                }
+                            }
+
+                            var all = $('.product-single__thumbnails');
+                            for (var i = 0; i < all.length; i++) {
+                                
+                                all[i].style.opacity = '1';
+                            }
+
+                            $('.product-single__thumbnails-item a:first').trigger('click');
+                            
+                        }
+                    }
+                    initval = 'set';
+
+                }
+            },1000);
+
+        }
+    });
+    
+</script>    

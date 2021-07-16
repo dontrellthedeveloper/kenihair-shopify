@@ -1,0 +1,159 @@
+                           
+         <div class="product-template__container page-width"
+         id="ProductSection-{{ section.id }}"
+         data-section-id="{{ section.id }}"
+         data-section-type="product"
+         data-enable-history-state="true"
+         data-ajax-enabled="{{ settings.enable_ajax }}"
+       >
+         {% comment %}
+           Get first variant, or deep linked one
+         {% endcomment %}
+         {%- assign current_variant = product.selected_or_first_available_variant -%}
+         {%- assign product_image_zoom_size = '1024x1024' -%}
+         {%- assign product_image_scale = '2' -%}
+         {%- assign enable_image_zoom = section.settings.enable_image_zoom -%}
+         {%- assign compare_at_price = current_variant.compare_at_price -%}
+         {%- assign price = current_variant.price -%}
+       
+         {% case section.settings.media_size %}
+           {% when 'small' %}
+             {%- assign product_media_width = 'medium-up--one-third' -%}
+             {%- assign product_description_width = 'medium-up--two-thirds' -%}
+             {%- assign height = 345 -%}
+           {% when 'medium' %}
+             {%- assign product_media_width = 'medium-up--one-half' -%}
+             {%- assign product_description_width = 'medium-up--one-half' -%}
+             {%- assign height = 530 -%}
+           {% when 'large' %}
+             {%- assign product_media_width = 'medium-up--two-thirds' -%}
+             {%- assign product_description_width = 'medium-up--one-third' -%}
+             {%- assign height = 720 -%}
+           {% when 'full' %}
+             {%- assign product_media_width = '' -%}
+             {%- assign product_description_width = '' -%}
+             {%- assign height = 1090 -%}
+             {%- assign enable_image_zoom = false -%}
+         {% endcase %}
+       
+       
+       </div>
+                         
+                           
+
+
+
+               
+               
+               <div class="single-product shop-quick-view-ajax clearfix">
+
+                    <div class="ajax-modal-title">
+                        <h2>{{ product.title }}</h2>
+                    </div>
+
+                    <div class="product modal-padding clearfix">
+						
+                        <div class="col_half nobottommargin">
+                            <div class="product-image">
+                              {% if product.featured_image != blank %}
+                              <a href="{{ product.url | within: collection }}"><img src="{{ product | img_url: 'master' }}" alt="Checked Short Dress"></a>
+            
+                              {% endif %}
+                              
+                            </div>
+                           
+                        </div>
+                        
+                        <div class="col_half nobottommargin col_last product-desc">
+                            <div class="product-price"><del>
+                                {% if product.compare_at_price > product.price %}
+
+                                {% if product.price_varies %}
+                                  {%- assign sale_price = product.price | money -%}
+                                  {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+                                {% else %}
+                                  {{ product.price | money }}
+                                {% endif %}
+                    
+                              {% else %}
+                    
+                                {% if product.price_varies %}
+                                  {%- assign price = product.price | money -%}
+                                  {{ 'products.product.from_text_html' | t: price: price }}
+                                {% else %}
+                                  
+                                  <ins>
+                                    {{ product.price | money }}
+                                </ins>
+                                {% endif %}
+                    
+                              {% endif %}
+                    
+                              {% if product.compare_at_price > product.price %}
+
+                                
+                                <del>
+                                    <s>{{ product.compare_at_price | money }}</s>
+                                </del> 
+                              {% endif %}
+                    
+                              {% unless product.available %}
+                                {{ 'products.product.sold_out' | t }}
+                              {% endunless %}
+                            </div>
+                            <div class="product-rating">
+                                <i class="icon-star3"></i>
+                                <i class="icon-star3"></i>
+                                <i class="icon-star3"></i>
+                                <i class="icon-star-half-full"></i>
+                                <i class="icon-star-empty"></i>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="line"></div>
+
+                            <!-- Product Single - Quantity & Cart Button
+                            ============================================= -->
+                            <form class="cart nobottommargin clearfix" method="post" enctype='multipart/form-data'>
+                                <div class="quantity clearfix">
+                                    <input type="button" value="-" class="minus">
+                                    <input type="text" step="1" min="1"  name="quantity" value="1" title="Qty" class="qty" size="4" />
+                                    <input type="button" value="+" class="plus">
+                                </div>
+                                <button type="submit" class="add-to-cart button nomargin">Add to cart</button>
+                            </form><!-- Product Single - Quantity & Cart Button End -->
+
+                            <div class="clear"></div>
+                            <div class="line"></div>
+                            <p>Libero velit id eaque ex quae laboriosam nulla optio doloribus! Perspiciatis, libero, neque, perferendis at nisi optio dolor!</p>
+                            <ul class="iconlist">
+                                <li><i class="icon-caret-right"></i> Dynamic Color Options</li>
+                                <li><i class="icon-caret-right"></i> Lots of Size Options</li>
+                                <li><i class="icon-caret-right"></i> 30-Day Return Policy</li>
+                            </ul>
+                            <div class="card product-meta nobottommargin">
+                                <div class="card-body">
+                                    <span itemprop="productID" class="sku_wrapper">SKU: <span class="sku">8465415</span></span>
+                                    <span class="posted_in">Category: <a href="https://localhost/offbeat/wp/product-category/shoes/" rel="tag">Shoes</a>.</span>
+                                    <span class="tagged_as">Tags: <a href="https://dante.swiftideas.net/product-tag/barena/" rel="tag">Barena</a>, <a href="https://dante.swiftideas.net/product-tag/blazers/" rel="tag">Blazers</a>, <a href="https://dante.swiftideas.net/product-tag/tailoring/" rel="tag">Tailoring</a>, <a href="https://dante.swiftideas.net/product-tag/unconstructed/" rel="tag">Unconstructed</a>.</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+
+                </div>
+
+
+
+                {% unless product == empty %}
+                <script type="application/json" id="ProductJson-{{ section.id }}">
+                  {{ product | json }}
+                </script>
+                <script type="application/json" id="ModelJson-{{ section.id }}">
+                  {{ product.media | where: 'media_type', 'model' | json }}
+                </script>
+              {% endunless %}
+              
+              
+              
+              

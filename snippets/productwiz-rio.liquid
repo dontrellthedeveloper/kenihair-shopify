@@ -1,0 +1,145 @@
+
+<script>
+  var __productWizRio = {};
+  (function() {
+    // START-1
+    {% if product %}
+      var product = {{product | json}};
+      var productMetafield = {{product.metafields.productwiz.rio | json}};
+      var shopMetafield = {{shop.metafields.productwiz.rio | json}};
+
+      // START-2
+      __productWizRio.enabled = false;
+      if (Array.isArray(product.variants) && product.variants.length > 0 && Array.isArray(product.media) && product.media.length > 0) {
+        if (!shopMetafield || !shopMetafield.disabled) {
+          if (productMetafield && productMetafield.enabled && !productMetafield.empty) {
+            __productWizRio.enabled = true;
+            __productWizRio.product = product;
+            __productWizRio.productRio = productMetafield.mapping;
+            __productWizRio.mediaSettings = productMetafield.mediaSettings;
+          }
+        }
+      }
+      // END-2
+    {% else %}
+      __productWizRio.enabled = false;
+    {% endif %}
+    // END-1
+    if (__productWizRio.enabled) {
+      
+function callback(mutations) {
+  mutations.forEach(function (mutation) {
+    Array.prototype.forEach.call(mutation.addedNodes, function (addedNode) {
+      if (typeof addedNode.className === 'string') {
+        if (!__productWizRio.config) {
+__productWizRio.config = {
+  "breakpoint": "750px",
+  "mobile": {
+    "navigation": false,
+    "pagination": false,
+    "swipe": true,
+    "dark": true,
+    "magnify": false,
+    "thumbnails": {
+      "orientation": "bottom",
+      "multiRow": false,
+      "thumbnailsPerRow": 3,
+      "navigation": true
+    },
+    "lightBox": true,
+    "lightBoxZoom": 2,
+    "maxHeight": "720px"
+  },
+  "desktop": {
+    "navigation": false,
+    "pagination": false,
+    "swipe": true,
+    "dark": true,
+    "magnify": {
+      "width": "full",
+      "height": "full",
+      "zoom": 3
+    },
+    "thumbnails": {
+      "orientation": "bottom",
+      "multiRow": true,
+      "thumbnailsPerRow": 4,
+      "navigation": false
+    },
+    "lightBox": false,
+    "lightBoxZoom": 2,
+    "maxHeight": "720px"
+  }
+};
+}
+
+try {
+  var productGalleryClassNames = ['product-single__photos', 'product-single__media-group'];
+  var rioClassName = 'rio-media-gallery';
+  var isContainer = productGalleryClassNames.find(function (x) {
+    return addedNode.className.indexOf(x) > -1;
+  }) && addedNode.className.indexOf(rioClassName) < 0;
+
+  if (isContainer && !__productWizRio.finishedInjection) {
+    var newAddedNode = addedNode.cloneNode(false);
+    newAddedNode.className += " ".concat(rioClassName);
+    newAddedNode.style.paddingBottom = '15px';
+    addedNode.parentElement.replaceChild(newAddedNode, addedNode);
+    __productWizRio.finishedInjection = true;
+  }
+
+  var desktop = __productWizRio.config.desktop;
+
+  if (typeof desktop.thumbnails === 'object' && desktop.thumbnails !== null && desktop.thumbnails.orientation === 'bottom') {
+    if (addedNode.className.indexOf('product-single--full-media') > -1) {
+      desktop.thumbnails.thumbnailsPerRow = 8;
+    }
+
+    if (addedNode.className.indexOf('product-single--large-media') > -1) {
+      desktop.thumbnails.thumbnailsPerRow = 5;
+    }
+
+    if (addedNode.className.indexOf('product-single--medium-media') > -1) {
+      desktop.thumbnails.thumbnailsPerRow = 4;
+    }
+
+    if (addedNode.className.indexOf('product-single--small-media') > -1) {
+      desktop.thumbnails.thumbnailsPerRow = 3;
+    }
+  }
+
+  if (typeof desktop.thumbnails === 'object' && desktop.thumbnails !== null && (desktop.thumbnails.orientation === 'left' || desktop.thumbnails.orientation === 'right')) {
+    if (addedNode.className.indexOf('product-single--full-media') > -1) {
+      desktop.thumbnails.container = 0.13;
+    }
+
+    if (addedNode.className.indexOf('product-single--large-media') > -1) {
+      desktop.thumbnails.container = 0.17;
+    }
+
+    if (addedNode.className.indexOf('product-single--medium-media') > -1) {
+      desktop.thumbnails.container = 0.20;
+    }
+
+    if (addedNode.className.indexOf('product-single--small-media') > -1) {
+      desktop.thumbnails.container = 0.25;
+    }
+  }
+} catch (err) {}
+      }
+    });
+  });
+}
+var observer = new MutationObserver(callback);
+var config = { childList: true, subtree: true };
+window.addEventListener('load', function () {
+  observer.disconnect();
+});
+observer.observe(document, config);
+
+    }
+  })();
+</script>
+<link rel="stylesheet" href="{{ 'productwiz-rio.css' | asset_url }}">
+<link rel="preload" href="{{ 'productwiz-rio.js' | asset_url }}" as="script">
+<script async src="{{ 'productwiz-rio.js' | asset_url }}"></script>

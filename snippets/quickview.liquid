@@ -1,0 +1,36 @@
+<div><span class="qe_announcement"></span>
+</div>
+<div class="qv-images">
+	<div class="qv-product-images" style="opacity: 0"></div>
+	<div class='qv-product-images-nav' style="opacity: 0"></div>
+</div>
+<div class="qv-content">
+	<div class="holder">
+		<h3 class="qv-product-title"></h3>
+		<div class="qv-product-vendor"></div>
+		<div class="qv-product-type"></div>
+		<h5 class="qv-product-price"></h5>
+		<h5 class="qv-product-original-price"></h5>
+		<h6 class="savingprice"></h6>
+		<hr />
+		<div class="qv-add-to-cart">
+			<div class="qv-product-options"></div>
+			<div class="quantity"> <span>Quantity</span>
+				<input type="number" class="qv-quantity" value="1" min="1">
+			</div>
+			<input type="submit" class="qv-add-button" value="Add to Cart"> <a class="view-product" href=""><span class="vqep">View Full Product Details</span></a>
+			<div class="qv-add-to-cart-response"></div>
+      </div>
+	</div>
+</div>
+
+	<div class="customarrow">	
+          <input type="button" class="qv-add-button_prev" id="qv-add-button_prev" /> 	  		
+          <input type="button" class="qv-add-button_next" id="qv-add-button_next" /> 	  		
+		</div>
+<div style="clear:both;"></div>
+<div class="qv-product-description"></div>
+
+<script>
+  var qecurrency = "{{ 0.00 | money }}".replace("0.00", "");
+</script>
